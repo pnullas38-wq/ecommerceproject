@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "node scripts/seed.mjs",
+    "seed-large": "node scripts/seed_large.mjs",
     "postinstall": "node -e \"try{require('fs').accessSync('next-env.d.ts')}catch{require('fs').writeFileSync('next-env.d.ts','/// <reference types=\\\"next\\\" />\\n')}\""
   },
   "dependencies": {
