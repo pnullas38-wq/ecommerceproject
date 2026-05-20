@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stuns — Online Shopping</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" id="logo"><span>★</span> Stuns</a>
+      <form class="search-form" id="search-form">
+        <input type="search" id="search-input" placeholder="Search products..." autocomplete="off">
+        <button type="submit">Search</button>
+      </form>
+      <div class="header-actions">
+        <button class="header-btn" id="account-btn">Sign In</button>
+        <button class="header-btn" id="orders-nav" style="display:none">Orders</button>
+        <button class="header-btn cart-btn" id="cart-btn">
+          Cart <span class="cart-count" id="cart-count" style="display:none">0</span>
+        </button>
+      </div>
+    </div>
+    <nav class="nav-categories">
+      <div class="container">
+        <button class="cat-chip active" data-category="all">All</button>
+        <button class="cat-chip" data-category="electronics">Electronics</button>
+        <button class="cat-chip" data-category="fashion">Fashion</button>
+        <button class="cat-chip" data-category="home">Home</button>
+        <button class="cat-chip" data-category="beauty">Beauty</button>
+        <button class="cat-chip" data-category="sports">Sports</button>
+        <button class="cat-chip" data-category="books">Books</button>
+        <button class="cat-chip" data-category="groceries">Groceries</button>
+        <button class="cat-chip" data-category="automotive">Automotive</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="page active" id="home-page">
+      <div class="hero">
+        <div class="container">
+          <h1>Shop smarter with Stuns</h1>
+          <p>Real cart, checkout, and order history — powered by a live database on your machine.</p>
+        </div>
+      </div>
+      <div class="container">
+        <h2 class="section-title">Featured deals</h2>
+        <div class="products-grid" id="featured-products"></div>
+        <h2 class="section-title section-title-all" style="margin-top:32px">All products</h2>
+        <div class="products-grid" id="all-products"></div>
+      </div>
+    </section>
+
+    <section class="page" id="product-page">
+      <div class="container" style="padding-top:24px">
+        <button class="btn btn-outline" id="detail-back" style="margin-bottom:16px">← Back</button>
+        <div class="product-detail">
+          <img id="detail-img" src="" alt="">
+          <div>
+            <h1 id="detail-name"></h1>
+            <p id="detail-rating"></p>
+            <p class="detail-price" id="detail-price"></p>
+            <p class="original-price" id="detail-original"></p>
+            <p id="detail-stock"></p>
+            <p class="detail-desc" id="detail-desc"></p>
+            <div class="qty-control">
+              <span>Qty:</span>
+              <button type="button" id="detail-dec">−</button>
+              <span id="detail-qty">1</span>
+              <button type="button" id="detail-inc">+</button>
+            </div>
+            <button class="btn btn-primary" id="detail-add" style="max-width:280px">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="cart-page">
+      <div class="container" style="padding-top:24px">
+        <h2 class="section-title">Shopping Cart</h2>
+        <div class="cart-layout">
+          <div id="cart-list"></div>
+          <div class="cart-summary" id="checkout-summary"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="checkout-page">
+      <div class="container" style="padding-top:24px">
+        <button class="btn btn-outline" id="checkout-back" style="margin-bottom:16px">← Back to cart</button>
+        <h2 class="section-title">Checkout</h2>
+        <div class="cart-layout">
+          <form class="checkout-form" id="checkout-form">
+            <h3 style="margin-bottom:16px">Delivery address</h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label>Full name</label>
+                <input name="name" required>
+              </div>
+              <div class="form-group">
+                <label>Phone</label>
+                <input name="phone" type="tel" required pattern="[0-9]{10}" title="10 digit phone">
+              </div>
+              <div class="form-group">
+                <label>Pincode</label>
+                <input name="pincode" required pattern="[0-9]{6}">
+              </div>
+              <div class="form-group full">
+                <label>Address</label>
+                <textarea name="address" rows="2" required></textarea>
+              </div>
+              <div class="form-group">
+                <label>City</label>
+                <input name="city" required>
+              </div>
+              <div class="form-group">
+                <label>State</label>
+                <input name="state" required>
+              </div>
+            </div>
+            <h3 style="margin:24px 0 12px">Payment</h3>
+            <div class="payment-options">
+              <label class="payment-option">
+                <input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="UPI"> UPI
+              </label>
+              <label class="payment-option">
+                <input type="radio" name="payment" value="Card"> Credit / Debit Card
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary" style="max-width:320px">Place Order</button>
+          </form>
+          <div class="cart-summary">
+            <h3 style="margin-bottom:12px">Order summary</h3>
+            <div id="checkout-items"></div>
+            <div class="summary-row total" style="margin-top:16px">
+              <span>Total</span>
+              <span id="checkout-total">₹0</span>
+            </div>
+            <p style="font-size:13px;color:var(--gray);margin-top:12px">Free shipping on orders ₹499+</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="confirmation-page">
+      <div class="container" style="padding-top:48px">
+        <div class="empty-state" style="max-width:480px;margin:0 auto">
+          <h2 style="color:var(--success)">Order placed!</h2>
+          <p>Order <strong>#<span id="confirm-id"></span></strong> confirmed.</p>
+          <p>Total paid: <strong id="confirm-total"></strong></p>
+          <button class="btn btn-primary" id="confirm-continue">Continue shopping</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="orders-page">
+      <div class="container" style="padding-top:24px">
+        <h2 class="section-title">Your orders</h2>
+        <div id="orders-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© Stuns E-Commerce — Demo store with real backend</p>
+  </footer>
+
+  <div class="modal-overlay" id="auth-modal">
+    <div class="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+      <h2 id="auth-title">Sign In</h2>
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" id="auth-tab-login">Login</button>
+        <button type="button" class="auth-tab" id="auth-tab-register">Register</button>
+      </div>
+      <p class="auth-error" id="auth-error"></p>
+      <form id="auth-form">
+        <div class="form-group" id="auth-name-group" style="display:none">
+          <label>Name</label>
+          <input id="auth-name" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="auth-email" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-password" required minlength="6" autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="/js/app.js"></script>
+</body>
+</html>
