@@ -19,7 +19,7 @@ export async function GET(request: Request) {
   if (error) return errorResponse(error.message, 500);
 
   const withItems = await Promise.all(
-    (orders || []).map(async (o) => {
+    (orders || []).map(async (o: any) => {
       const { data: items } = await db.from('order_items').select('product_name, price, quantity').eq('order_id', o.id);
       return { ...o, items: items || [] };
     })

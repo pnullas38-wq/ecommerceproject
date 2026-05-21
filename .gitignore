@@ -6,3 +6,4 @@ data/
 .next/
 out/
 legacy/
+*.tsbuildinfo

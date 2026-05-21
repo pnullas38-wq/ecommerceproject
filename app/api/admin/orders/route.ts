@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   if (error) return errorResponse(error.message, 500);
 
   const enriched = await Promise.all(
-    (orders || []).map(async (o) => {
+    (orders || []).map(async (o: any) => {
       const [{ data: items }, { data: customer }] = await Promise.all([
         db.from('order_items').select('product_name, price, quantity').eq('order_id', o.id),
         db.from('users').select('name, email').eq('id', o.user_id).single(),
