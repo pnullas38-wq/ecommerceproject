@@ -1,14 +1,20 @@
 import { createClient } from '@supabase/supabase-js';
 import 'dotenv/config';
+import fs from 'fs';
+import path from 'path';
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-if (!url || !key) {
-  console.error('Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env');
-  process.exit(1);
-}
 
-const db = createClient(url, key);
+let db;
+let isLocalMode = false;
+
+if (!url || !key) {
+  console.log('Environment variables not found. Running in Local Database Mode.');
+  isLocalMode = true;
+} else {
+  db = createClient(url, key);
+}
 
 // Product Category Unsplash Image pools (high resolution, relevant)
 const IMAGE_POOLS = {
@@ -250,13 +256,32 @@ console.log(`Generated ${generatedProducts.length} unique products.`);
 async function main() {
   console.log('Starting seed process...');
   
-  // Optional: clear existing products first if desired (uncomment if you want a complete reset)
-  // const { error: deleteError } = await db.from('products').delete().neq('id', 0);
-  // if (deleteError) {
-  //   console.error('Error clearing products:', deleteError.message);
-  // } else {
-  //   console.log('Cleared existing products.');
-  // }
+  if (isLocalMode) {
+    const DB_FILE = path.join(process.cwd(), 'data', 'local_db.json');
+    const dir = path.dirname(DB_FILE);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    let currentDb = { products: [], users: [], cart_items: [], orders: [], order_items: [] };
+    if (fs.existsSync(DB_FILE)) {
+      try {
+        currentDb = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+      } catch (e) {
+        // ignore
+      }
+    }
+    
+    const productsWithIds = generatedProducts.map((p, idx) => ({
+      id: 100 + idx,
+      created_at: new Date().toISOString(),
+      ...p
+    }));
+    
+    currentDb.products = productsWithIds;
+    fs.writeFileSync(DB_FILE, JSON.stringify(currentDb, null, 2));
+    console.log(`\nSuccess! Seeded a total of ${productsWithIds.length} products into local_db.json.`);
+    process.exit(0);
+  }
 
   // Batch insert products (we split into chunks of 100 to avoid any database request size limits)
   const chunkSize = 100;
